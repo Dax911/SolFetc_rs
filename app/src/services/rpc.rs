@@ -63,6 +63,7 @@ pub async fn get_latest_blockhash() -> Result<String, String> {
         .ok_or_else(|| "Missing blockhash".to_string())
 }
 
+#[allow(dead_code)]
 pub async fn get_balance(pubkey: &str) -> Result<u64, String> {
     let result = rpc_request("getBalance", json!([pubkey])).await?;
     result["value"]

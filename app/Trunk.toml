@@ -8,4 +8,4 @@ watch = ["src", "style", "index.html"]
 [[hooks]]
 stage = "pre_build"
 command = "pnpm"
-command_arguments = ["dlx", "tailwindcss", "-i", "style/tailwind.css", "-o", "style/output.css", "--minify"]
+command_arguments = ["dlx", "tailwindcss@3", "-i", "style/tailwind.css", "-o", "style/output.css", "--minify"]
