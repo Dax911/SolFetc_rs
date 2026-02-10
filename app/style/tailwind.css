@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .glass-panel {
+    @apply bg-panel-dark/60 backdrop-blur-xl border border-glass-border rounded-2xl;
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 bg-cyber-cyan/10 border border-cyber-cyan/30 text-cyber-cyan
+           rounded-xl font-semibold tracking-wide transition-all duration-300
+           hover:bg-cyber-cyan/20 hover:shadow-glow hover:border-cyber-cyan/60
+           active:scale-95 cursor-pointer;
+  }
+
+  .btn-danger {
+    @apply px-6 py-3 bg-neon-rose/10 border border-neon-rose/30 text-neon-rose
+           rounded-xl font-semibold tracking-wide transition-all duration-300
+           hover:bg-neon-rose/20 hover:shadow-glow-rose hover:border-neon-rose/60
+           active:scale-95 cursor-pointer;
+  }
+}
+
+@layer base {
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+}
+
+@keyframes radar-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(0, 240, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0); }
+}
+
+.animate-radar {
+  animation: radar-pulse 1.5s infinite;
+}
+
+@keyframes cascade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-cascade {
+  animation: cascade-in 0.4s ease-out both;
+}

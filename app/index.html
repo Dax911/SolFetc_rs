@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zera Janitor</title>
+    <link data-trunk rel="css" href="style/output.css" />
+    <link data-trunk rel="rust" data-wasm-opt="z" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://unpkg.com/@solana/web3.js@1.95.3/lib/index.iife.min.js"></script>
+    <script>
+    // JS shim: build, sign, and send Solana transactions from WASM
+    window.zeraSignAndSend = async function(instructionBytes, accountMetas, blockhash, rpcUrl) {
+        const { Transaction, TransactionInstruction, PublicKey, Connection } = solanaWeb3;
+        const conn = new Connection(rpcUrl);
+        const keys = accountMetas.map(m => ({
+            pubkey: new PublicKey(m.pubkey),
+            isSigner: m.isSigner,
+            isWritable: m.isWritable,
+        }));
+        const programId = new PublicKey(accountMetas[accountMetas.length - 1].programId);
+        const ix = new TransactionInstruction({
+            keys: keys,
+            programId: programId,
+            data: Buffer.from(instructionBytes),
+        });
+        const tx = new Transaction();
+        tx.recentBlockhash = blockhash;
+        tx.feePayer = new PublicKey(accountMetas[0].pubkey);
+        tx.add(ix);
+        const provider = window.solana || window.backpack;
+        if (!provider) throw new Error("No wallet found");
+        const signed = await provider.signTransaction(tx);
+        const sig = await conn.sendRawTransaction(signed.serialize());
+        return sig;
+    };
+    </script>
+</head>
+<body class="bg-vault-dark min-h-screen font-sans text-white antialiased">
+</body>
+</html>

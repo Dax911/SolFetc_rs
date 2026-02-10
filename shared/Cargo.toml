@@ -1,0 +1,6 @@
+[package]
+name = "zera-shared"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]

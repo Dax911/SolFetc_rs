@@ -1,0 +1,11 @@
+[build]
+target = "index.html"
+dist = "dist"
+
+[watch]
+watch = ["src", "style", "index.html"]
+
+[[hooks]]
+stage = "pre_build"
+command = "pnpm"
+command_arguments = ["dlx", "tailwindcss", "-i", "style/tailwind.css", "-o", "style/output.css", "--minify"]
