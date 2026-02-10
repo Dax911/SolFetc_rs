@@ -5,10 +5,14 @@ use crate::types::token_account::TokenAccountInfo;
 
 #[component]
 pub fn BatchPanel() -> impl IntoView {
+    let wallet = expect_context::<ReadSignal<String>>();
     let accounts = expect_context::<ReadSignal<Vec<TokenAccountInfo>>>();
     let selected = expect_context::<ReadSignal<Vec<usize>>>();
     let set_selected = expect_context::<WriteSignal<Vec<usize>>>();
+    let set_accounts = expect_context::<WriteSignal<Vec<TokenAccountInfo>>>();
     let processing = expect_context::<ReadSignal<bool>>();
+    let set_processing = expect_context::<WriteSignal<bool>>();
+    let set_tx_sigs = expect_context::<WriteSignal<Vec<(String, String)>>>();
 
     let count = move || selected.get().len();
     let has_selection = move || count() > 0;
@@ -36,7 +40,15 @@ pub fn BatchPanel() -> impl IntoView {
     };
 
     let on_incinerate = move |_| {
-        execute_batch_clean();
+        execute_batch_clean(
+            wallet,
+            accounts,
+            selected,
+            set_processing,
+            set_tx_sigs,
+            set_selected,
+            set_accounts,
+        );
     };
 
     view! {

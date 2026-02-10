@@ -7,10 +7,11 @@ use crate::types::token_account::TokenAccountInfo;
 /// Dust threshold: accounts with balance below this are considered closeable.
 const DUST_THRESHOLD: u64 = 0;
 
-pub fn scan_token_accounts(owner_pubkey: String) {
-    let set_accounts = expect_context::<WriteSignal<Vec<TokenAccountInfo>>>();
-    let set_scanning = expect_context::<WriteSignal<bool>>();
-
+pub fn scan_token_accounts(
+    owner_pubkey: String,
+    set_accounts: WriteSignal<Vec<TokenAccountInfo>>,
+    set_scanning: WriteSignal<bool>,
+) {
     spawn_local(async move {
         match get_token_accounts_by_owner(&owner_pubkey).await {
             Ok(result) => {

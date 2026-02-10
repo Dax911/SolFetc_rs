@@ -1,10 +1,15 @@
 use leptos::prelude::*;
 
 use crate::services::wallet::{connect_wallet, disconnect_wallet};
+use crate::types::token_account::TokenAccountInfo;
 
 #[component]
 pub fn Header() -> impl IntoView {
     let wallet = expect_context::<ReadSignal<String>>();
+    let set_wallet = expect_context::<WriteSignal<String>>();
+    let set_accounts = expect_context::<WriteSignal<Vec<TokenAccountInfo>>>();
+    let set_selected = expect_context::<WriteSignal<Vec<usize>>>();
+    let set_tx_sigs = expect_context::<WriteSignal<Vec<(String, String)>>>();
 
     let connected = move || !wallet.get().is_empty();
 
@@ -35,7 +40,7 @@ pub fn Header() -> impl IntoView {
                                 <span class="text-sm font-mono text-text-muted">{display_addr}</span>
                                 <button
                                     class="btn-danger text-sm px-4 py-2"
-                                    on:click=move |_| disconnect_wallet()
+                                    on:click=move |_| disconnect_wallet(set_wallet, set_accounts, set_selected, set_tx_sigs)
                                 >
                                     "Disconnect"
                                 </button>
@@ -45,7 +50,7 @@ pub fn Header() -> impl IntoView {
                         view! {
                             <button
                                 class="btn-primary text-sm"
-                                on:click=move |_| connect_wallet()
+                                on:click=move |_| connect_wallet(set_wallet)
                             >
                                 "Connect Wallet"
                             </button>

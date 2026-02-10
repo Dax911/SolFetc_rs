@@ -10,6 +10,7 @@ pub fn Scanner() -> impl IntoView {
     let accounts = expect_context::<ReadSignal<Vec<TokenAccountInfo>>>();
     let scanning = expect_context::<ReadSignal<bool>>();
     let set_scanning = expect_context::<WriteSignal<bool>>();
+    let set_accounts = expect_context::<WriteSignal<Vec<TokenAccountInfo>>>();
     let selected = expect_context::<ReadSignal<Vec<usize>>>();
     let set_selected = expect_context::<WriteSignal<Vec<usize>>>();
 
@@ -23,7 +24,7 @@ pub fn Scanner() -> impl IntoView {
         }
         set_scanning.set(true);
         set_selected.set(vec![]);
-        scan_token_accounts(pubkey);
+        scan_token_accounts(pubkey, set_accounts, set_scanning);
     };
 
     let toggle = move |idx: usize| {
